@@ -2,7 +2,7 @@
   "name": "actions-hugo",
   "version": "3.0.0",
   "description": "GitHub Actions for Hugo",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=20.10.0",
     "npm": ">=10.2.3"
@@ -12,7 +12,7 @@
     "lint": "eslint ./{src,__tests__}/**/*.ts",
     "lint:fix": "eslint --fix ./{src,__tests__}/**/*.ts",
     "test": "jest --coverage --verbose",
-    "build": "ncc build ./src/index.ts -o lib",
+    "build": "ncc build ./src/index.ts -o dist",
     "tsc": "tsc",
     "format": "prettier --write '**/*.ts'",
     "format:check": "prettier --check '**/*.ts'",
