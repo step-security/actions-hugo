@@ -60,4 +60,4 @@ jobs:
           name: coverage-${{ matrix.os }}
           path: coverage
 
-      - uses: codecov/codecov-action@015f24e6818733317a2da2edd6290ab26238649a # v5.0.7
+      - uses: codecov/codecov-action@0da7aa657d958d32c117fc47e1f977e7524753c7 # v5.3.0
