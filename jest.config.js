@@ -9,6 +9,6 @@ module.exports = {
   },
   verbose: true,
   moduleNameMapper: {
-    "^axios$": "axios/dist/node/axios.cjs"
+    "^axios$": "axios"
   }
 }
