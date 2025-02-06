@@ -14836,7 +14836,11 @@ const main = __importStar(__nccwpck_require__(399));
         await main.run();
     }
     catch (e) {
-        core.setFailed(`Action failed with error ${e.message}`);
+        let errorMessage = "Action failed with erro";
+        if (e instanceof Error) {
+            errorMessage += `${e.message}`;
+        }
+        core.setFailed(errorMessage);
     }
 })();
 

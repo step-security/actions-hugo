@@ -5,6 +5,10 @@ import * as main from './main';
   try {
     await main.run();
   } catch (e) {
-    core.setFailed(`Action failed with error ${e}`);
+    let errorMessage = 'Action failed with erro';
+    if (e instanceof Error) {
+      errorMessage += `${e.message}`;
+    }
+    core.setFailed(errorMessage);
   }
 })();
