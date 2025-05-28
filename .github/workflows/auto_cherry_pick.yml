@@ -7,6 +7,8 @@ on:
         description: "Base branch to create the PR against"
         required: true
         default: "main"
+  schedule:
+    - cron: "0 0 * * 1"
 
 permissions:
   contents: write
@@ -16,7 +18,7 @@ permissions:
 
 jobs:
   audit-fix:
-    uses: step-security/reusable-workflows/.github/workflows/auto_cherry_pick.yaml@fix_UpStream-Changes-Cherry-Pick
+    uses: step-security/reusable-workflows/.github/workflows/auto_cherry_pick.yaml@v1
     with:
       original-owner: "peaceiris"
       repo-name: "actions-hugo"
