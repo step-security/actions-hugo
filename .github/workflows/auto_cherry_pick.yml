@@ -7,6 +7,8 @@ on:
         description: "Base branch to create the PR against"
         required: true
         default: "main"
+  schedule:
+    - cron: "0 0 * * 1"
 
 permissions:
   contents: write
