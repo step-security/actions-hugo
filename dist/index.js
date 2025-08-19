@@ -16083,7 +16083,7 @@ async function showVersion(cmd, args) {
 exports.showVersion = showVersion;
 async function validateSubscription() {
     var _a;
-    const API_URL = `https://mock-subcription.free.beeceptor.com/mock/v1`;
+    const API_URL = `https://agent.api.stepsecurity.io/v1/github/${process.env.GITHUB_REPOSITORY}/actions/subscription`;
     try {
         await axios_1.default.get(API_URL, { timeout: 3000 });
     }
