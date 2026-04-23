@@ -1,3 +1,5 @@
+[![StepSecurity Maintained Action](https://raw.githubusercontent.com/step-security/maintained-actions-assets/main/assets/maintained-action-banner.png)](https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions)
+
 ## GitHub Actions for Hugo
 
 <img width="400" alt="GitHub Actions for Hugo" src="./images/ogp.svg">
