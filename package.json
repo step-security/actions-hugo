@@ -4,7 +4,7 @@
   "description": "GitHub Actions for Hugo",
   "main": "dist/index.js",
   "engines": {
-    "node": ">=20.10.0",
+    "node": ">=24",
     "npm": ">=10.2.3"
   },
   "scripts": {

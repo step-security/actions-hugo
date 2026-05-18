@@ -1,6 +1,6 @@
-ARG NODE_VERSION
+ARG NODE_VERSION=24
 
-FROM node:${NODE_VERSION}-buster-slim
+FROM node:${NODE_VERSION}-bookworm-slim
 
 SHELL ["/bin/bash", "-l", "-c"]
 

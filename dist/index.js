@@ -45780,6 +45780,7 @@ exports.run = exports.showVersion = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const axios_1 = __importStar(__nccwpck_require__(8757));
 const exec = __importStar(__nccwpck_require__(1514));
+const fs = __importStar(__nccwpck_require__(7147));
 const get_latest_version_1 = __nccwpck_require__(328);
 const installer_1 = __nccwpck_require__(2574);
 const constants_1 = __nccwpck_require__(9042);
@@ -45803,19 +45804,38 @@ async function showVersion(cmd, args) {
 }
 exports.showVersion = showVersion;
 async function validateSubscription() {
-    var _a;
-    const API_URL = `https://agent.api.stepsecurity.io/v1/github/${process.env.GITHUB_REPOSITORY}/actions/subscription`;
+    const eventPath = process.env.GITHUB_EVENT_PATH;
+    let repoPrivate;
+    if (eventPath && fs.existsSync(eventPath)) {
+        const eventData = JSON.parse(fs.readFileSync(eventPath, 'utf8'));
+        repoPrivate = eventData?.repository?.private;
+    }
+    const upstream = 'peaceiris/actions-hugo';
+    const action = process.env.GITHUB_ACTION_REPOSITORY;
+    const docsUrl = 'https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions';
+    core.info('');
+    core.info('\u001b[1;36mStepSecurity Maintained Action\u001b[0m');
+    core.info(`Secure drop-in replacement for ${upstream}`);
+    if (repoPrivate === false)
+        core.info('\u001b[32m✓ Free for public repositories\u001b[0m');
+    core.info(`\u001b[36mLearn more:\u001b[0m ${docsUrl}`);
+    core.info('');
+    if (repoPrivate === false)
+        return;
+    const serverUrl = process.env.GITHUB_SERVER_URL || 'https://github.com';
+    const body = { action: action || '' };
+    if (serverUrl !== 'https://github.com')
+        body.ghes_server = serverUrl;
     try {
-        await axios_1.default.get(API_URL, { timeout: 3000 });
+        await axios_1.default.post(`https://agent.api.stepsecurity.io/v1/github/${process.env.GITHUB_REPOSITORY}/actions/maintained-actions-subscription`, body, { timeout: 3000 });
     }
     catch (error) {
-        if ((0, axios_1.isAxiosError)(error) && ((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 403) {
-            core.error('Subscription is not valid. Reach out to support@stepsecurity.io');
+        if ((0, axios_1.isAxiosError)(error) && error.response?.status === 403) {
+            core.error(`\u001b[1;31mThis action requires a StepSecurity subscription for private repositories.\u001b[0m`);
+            core.error(`\u001b[31mLearn how to enable a subscription: ${docsUrl}\u001b[0m`);
             process.exit(1);
         }
-        else {
-            core.info('Timeout or API not reachable. Continuing to next step.');
-        }
+        core.info('Timeout or API not reachable. Continuing to next step.');
     }
 }
 async function run() {
