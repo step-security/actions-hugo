@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "lib": ["ES2022"],
-    "module": "commonjs",
-    "target": "ES2022",
+    "lib": ["ES2019"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2019",
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./lib",
     "rootDir": "./src",
     "removeComments": true,
     "strict": true,
@@ -12,5 +13,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "exclude": ["node_modules", "__tests__"]
 }
