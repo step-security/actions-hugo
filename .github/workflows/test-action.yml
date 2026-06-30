@@ -2,7 +2,7 @@ name: Test Action
 
 on:
   push:
-    branches: [main, feat/node24]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
