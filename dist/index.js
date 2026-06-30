@@ -55395,6 +55395,7 @@ function getArch(arch, os, conventions) {
 
 ;// CONCATENATED MODULE: ./src/get-url.ts
 function get_url_getURL(os, arch, extended, version) {
+    const downloadVersion = getDownloadVersion(version);
     const extendedStr = (extended) => {
         if (extended === 'true') {
             return 'extended_';
@@ -55416,12 +55417,12 @@ function get_url_getURL(os, arch, extended, version) {
         }
     };
     const baseURL = 'https://github.com/gohugoio/hugo/releases/download';
-    const assetBase = `hugo_${extendedStr(extended)}${version}_`;
-    const legacyVersionedAssetBase = `hugo_${extendedStr(extended)}v${version}_`;
+    const assetBase = `hugo_${extendedStr(extended)}${downloadVersion}_`;
+    const legacyVersionedAssetBase = `hugo_${extendedStr(extended)}v${downloadVersion}_`;
     const assetBases = [assetBase, legacyVersionedAssetBase];
     const assetURLs = (assetNames) => {
         return Array.from(new Set(assetNames)).map(assetName => {
-            return `${baseURL}/v${version}/${assetName}`;
+            return `${baseURL}/v${downloadVersion}/${assetName}`;
         });
     };
     if (os === 'macOS') {
@@ -55452,6 +55453,12 @@ function get_url_getURL(os, arch, extended, version) {
         return assetURLs(assetBases.flatMap(assetBase => assetPatterns.map(asset => `${assetBase}${asset}`)));
     }
     return assetURLs([`${assetBase}${os}-${arch}.tar.gz`]);
+}
+function getDownloadVersion(version) {
+    if (version === '0.139.5') {
+        return '0.139.4';
+    }
+    return version;
 }
 
 ;// CONCATENATED MODULE: ./src/constants.ts
@@ -55565,6 +55572,10 @@ async function installer(version) {
     const archName = getArch(process.arch, osName, conventions);
     core_debug(`Processor Architecture: ${archName}`);
     const toolURLs = get_url_getURL(osName, archName, extended, version);
+    const downloadVersion = getDownloadVersion(version);
+    if (downloadVersion !== version) {
+        info(`Hugo ${version} release does not publish archives; downloading v${downloadVersion} archives instead.`);
+    }
     const workDir = await createWorkDir();
     const binDir = await createBinDir(workDir);
     const tempDir = await createTempDir(workDir);
