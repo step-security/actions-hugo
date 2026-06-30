@@ -1,4 +1,4 @@
-ARG NODE_VERSION=24
+ARG NODE_VERSION=24.15.0
 
 FROM node:${NODE_VERSION}-bookworm-slim
 

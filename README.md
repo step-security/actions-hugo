@@ -12,10 +12,6 @@
 ![Test](https://github.com/step-security/actions-hugo/workflows/Test/badge.svg?branch=main&event=push)
 ![Code Scanning](https://github.com/step-security/actions-hugo/workflows/Code%20Scanning/badge.svg?event=push)
 
-[![CodeFactor](https://www.codefactor.io/repository/github/step-security/actions-hugo/badge)](https://www.codefactor.io/repository/github/step-security/actions-hugo)
-[![codecov](https://codecov.io/gh/step-security/actions-hugo/branch/main/graph/badge.svg)](https://codecov.io/gh/step-security/actions-hugo)
-[![Maintainability](https://api.codeclimate.com/v1/badges/ebf2eef3a046b396ba9c/maintainability)](https://codeclimate.com/github/step-security/actions-hugo/maintainability)
-
 This **Hugo Setup Action** can install [Hugo] to a virtual machine of **GitHub Actions**.
 **Hugo extended** version, **Hugo Modules**, Linux (Ubuntu), macOS, and Windows are supported.
 
