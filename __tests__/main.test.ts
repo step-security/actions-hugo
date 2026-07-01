@@ -1,9 +1,9 @@
 import * as main from '../src/main';
 import * as io from '@actions/io';
 import path from 'path';
-import nock from 'nock';
 import {Tool, Action} from '../src/constants';
 import {FetchError} from 'node-fetch';
+import {clearMockFetchResponses, mockFetchResponse} from './mocks/node-fetch';
 import jsonTestBrew from './data/brew.json';
 // import jsonTestGithub from './data/github.json';
 
@@ -19,7 +19,8 @@ describe('Integration testing run()', () => {
     await io.rmRF(workDir);
 
     delete process.env['INPUT_HUGO-VERSION'];
-    nock.cleanAll();
+    delete process.env['INPUT_EXTENDED'];
+    clearMockFetchResponses();
   });
 
   test('succeed in installing a custom version', async () => {
@@ -43,7 +44,7 @@ describe('Integration testing run()', () => {
   test('succeed in installing the latest version', async () => {
     const testVersion = 'latest';
     process.env['INPUT_HUGO-VERSION'] = testVersion;
-    nock('https://formulae.brew.sh').get(`/api/formula/${Tool.Repo}.json`).reply(200, jsonTestBrew);
+    mockFetchResponse(`https://formulae.brew.sh/api/formula/${Tool.Repo}.json`, 200, jsonTestBrew);
     const result: main.ActionResult = await main.run();
     expect(result.exitcode).toBe(0);
     expect(result.output).toMatch(`hugo v${Tool.TestVersionLatest}`);
@@ -53,7 +54,7 @@ describe('Integration testing run()', () => {
     const testVersion = 'latest';
     process.env['INPUT_HUGO-VERSION'] = testVersion;
     process.env['INPUT_EXTENDED'] = 'true';
-    nock('https://formulae.brew.sh').get(`/api/formula/${Tool.Repo}.json`).reply(200, jsonTestBrew);
+    mockFetchResponse(`https://formulae.brew.sh/api/formula/${Tool.Repo}.json`, 200, jsonTestBrew);
     const result: main.ActionResult = await main.run();
     expect(result.exitcode).toBe(0);
     expect(result.output).toMatch(`hugo v${Tool.TestVersionLatest}`);
@@ -62,9 +63,9 @@ describe('Integration testing run()', () => {
 
   test('fail to install the latest version due to 404 of brew', async () => {
     process.env['INPUT_HUGO-VERSION'] = 'latest';
-    nock('https://formulae.brew.sh').get(`/api/formula/${Tool.Repo}.json`).reply(404);
+    mockFetchResponse(`https://formulae.brew.sh/api/formula/${Tool.Repo}.json`, 404);
 
-    await expect(main.run()).rejects.toThrowError(FetchError);
+    await expect(main.run()).rejects.toThrow(FetchError);
   });
 });
 
@@ -81,6 +82,6 @@ describe('showVersion()', () => {
   });
 
   test('return not found', async () => {
-    await expect(main.showVersion('gitgit', ['--version'])).rejects.toThrowError(Error);
+    await expect(main.showVersion('gitgit', ['--version'])).rejects.toThrow('spawn gitgit ENOENT');
   });
 });
